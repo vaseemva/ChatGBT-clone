@@ -1,4 +1,6 @@
 import 'package:chatgpt_clone/services/assets_manager.dart';
+import 'package:chatgpt_clone/utils/constants.dart';
+import 'package:chatgpt_clone/widgets/chat_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 
@@ -38,8 +40,11 @@ class HomeScreenState extends State<HomeScreen> {
           children: [
             Flexible(
               child: ListView.builder(
-                itemBuilder: (context, index) => Text("$index st one "),
-                itemCount: 10,
+                itemBuilder: (context, index) => ChatWidget(
+                  msg: chatMessages[index]["msg"].toString(), 
+                  index: int.parse(chatMessages[index]["chatIndex"].toString()),
+                ),
+                itemCount: 6,
               ),
             ),
             if (_isTyping) ...[
