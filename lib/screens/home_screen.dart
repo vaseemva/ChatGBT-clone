@@ -1,3 +1,4 @@
+import 'package:chatgpt_clone/services/api_service.dart';
 import 'package:chatgpt_clone/services/assets_manager.dart';
 import 'package:chatgpt_clone/services/services.dart';
 import 'package:chatgpt_clone/utils/constants.dart';
@@ -73,7 +74,13 @@ class HomeScreenState extends State<HomeScreen> {
                           hintStyle: TextStyle(color: Colors.grey)),
                     )),
                     IconButton(
-                        onPressed: () {},
+                        onPressed: () async{
+                          try {
+                           await  ApiServices.getModels();
+                          } catch (e) {
+                            print(e.toString()); 
+                          }
+                        },
                         icon: const Icon(
                           Icons.send,
                           color: Colors.white,
