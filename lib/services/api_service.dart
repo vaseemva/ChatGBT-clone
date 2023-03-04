@@ -1,5 +1,5 @@
 import 'dart:convert';
-import 'dart:developer';
+
 import 'dart:io';
 
 import 'package:chatgpt_clone/models/models_model.dart';
@@ -11,7 +11,7 @@ class ApiServices {
     var response=await  http.get(Uri.parse("$baseurl/models"),headers: { 
         'Authorization': 'Bearer $apiKey'
       });
-      Map jsonResponse=jsonDecode(response.body);
+      Map jsonResponse=jsonDecode(response.body); 
       if(jsonResponse['error']!=null){
         print(jsonResponse['error']['message']);
         throw HttpException(jsonResponse['error']['message']);
