@@ -1,6 +1,8 @@
+import 'package:chatgpt_clone/providers/models_provider.dart';
 import 'package:chatgpt_clone/screens/home_screen.dart';
 import 'package:chatgpt_clone/utils/colors.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 void main() {
   runApp(const MyApp());
@@ -11,15 +13,20 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'ChatGBT Clone',
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        scaffoldBackgroundColor: scaffoldBackgroundColor,
-        appBarTheme: AppBarTheme(color: cardColor)
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(
+          create: (_) => ModelsProvider(),
+        )
+      ],
+      child: MaterialApp(
+        title: 'ChatGBT Clone',
+        debugShowCheckedModeBanner: false,
+        theme: ThemeData(
+            scaffoldBackgroundColor: scaffoldBackgroundColor,
+            appBarTheme: AppBarTheme(color: cardColor)),
+        home: const HomeScreen(),
       ),
-      home: const HomeScreen() ,
     );
   }
 }
-
