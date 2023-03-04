@@ -1,6 +1,8 @@
 import 'package:chatgpt_clone/services/assets_manager.dart';
+import 'package:chatgpt_clone/services/services.dart';
 import 'package:chatgpt_clone/utils/constants.dart';
 import 'package:chatgpt_clone/widgets/chat_widget.dart';
+import 'package:chatgpt_clone/widgets/text_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 
@@ -28,9 +30,11 @@ class HomeScreenState extends State<HomeScreen> {
           title: const Text('ChatGBT'),
           actions: [
             IconButton(
-                onPressed: () {},
+                onPressed: () async {
+                  await Services.showModalsheet(context);
+                },
                 icon: const Icon(
-                  Icons.more_vert_rounded, 
+                  Icons.more_vert_rounded,
                   color: Colors.white,
                 ))
           ],
@@ -41,7 +45,7 @@ class HomeScreenState extends State<HomeScreen> {
             Flexible(
               child: ListView.builder(
                 itemBuilder: (context, index) => ChatWidget(
-                  msg: chatMessages[index]["msg"].toString(), 
+                  msg: chatMessages[index]["msg"].toString(),
                   index: int.parse(chatMessages[index]["chatIndex"].toString()),
                 ),
                 itemCount: 6,

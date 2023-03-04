@@ -19,6 +19,7 @@ class ChatWidget extends StatelessWidget {
             padding: const EdgeInsets.all(8.0),
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.start,
+              
               children: [
                 Image.asset(
                   index == 0 ? AssetsManger.personLogo : AssetsManger.chatLogo,
@@ -28,7 +29,10 @@ class ChatWidget extends StatelessWidget {
                 const SizedBox(
                   width: 8,
                 ),
-                Expanded(child: TextWidget(label: msg)),
+                Expanded(child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: TextWidget(label: msg),
+                )),
                 index==0?const SizedBox.shrink():Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   mainAxisSize: MainAxisSize.min,
