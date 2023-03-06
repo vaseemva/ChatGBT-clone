@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 
 class ModelsProvider with ChangeNotifier {
   List<ModelsModel> models = [];
-  String currentModel = 'text-davinci:001';
+  String currentModel = 'text-davinci-003';
   List<ModelsModel> get getModels => models;
 
   String get getCurrentModel => currentModel;

@@ -1,7 +1,5 @@
 import 'package:chatgpt_clone/providers/models_provider.dart';
-import 'package:chatgpt_clone/services/api_service.dart';
 import 'package:chatgpt_clone/utils/colors.dart';
-import 'package:chatgpt_clone/utils/constants.dart';
 import 'package:chatgpt_clone/widgets/text_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -14,10 +12,11 @@ class ModelDropDown extends StatefulWidget {
 }
 
 class _ModelDropDownState extends State<ModelDropDown> {
-  String currentModel = 'text-davinci:001';
+  String? currentModel ;
   @override
   Widget build(BuildContext context) {
     final modelsProvider=Provider.of<ModelsProvider>(context,listen: false);
+    currentModel=modelsProvider.getCurrentModel;
     return FutureBuilder(
       future: modelsProvider.getAllModels(), 
       builder: (context, snapshot) {
@@ -43,6 +42,7 @@ class _ModelDropDownState extends State<ModelDropDown> {
                     setState(() {
                       currentModel = value.toString();
                     });
+                    modelsProvider.setCurrentModel=value.toString();
                   },
                 ),
             );
