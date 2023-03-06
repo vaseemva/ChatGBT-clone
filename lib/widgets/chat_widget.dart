@@ -1,3 +1,4 @@
+import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:chatgpt_clone/services/assets_manager.dart';
 import 'package:chatgpt_clone/utils/colors.dart';
 import 'package:chatgpt_clone/widgets/text_widget.dart';
@@ -19,7 +20,6 @@ class ChatWidget extends StatelessWidget {
             padding: const EdgeInsets.all(8.0),
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.start,
-              
               children: [
                 Image.asset(
                   index == 0 ? AssetsManger.personLogo : AssetsManger.chatLogo,
@@ -29,19 +29,45 @@ class ChatWidget extends StatelessWidget {
                 const SizedBox(
                   width: 8,
                 ),
-                Expanded(child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: TextWidget(label: msg),
-                )),
-                index==0?const SizedBox.shrink():Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  mainAxisSize: MainAxisSize.min,
-                  children: const [
-                    Icon(Icons.thumb_up_alt,color: Colors.white,),
-                    SizedBox(width: 8,),
-                     Icon(Icons.thumb_down_alt,color: Colors.white,) 
-                  ],
-                )
+                index == 0
+                    ? Expanded(
+                        child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: TextWidget(label: msg),
+                      ))
+                    : Expanded(
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: DefaultTextStyle(
+                            style: TextStyle(),
+                            child: AnimatedTextKit(
+                              isRepeatingAnimation: false,
+                              repeatForever: false,
+                              displayFullTextOnTap: true,
+                              totalRepeatCount: 1,
+                                animatedTexts: [TyperAnimatedText(msg.trim())]),
+                          ),
+                        ),
+                      ),
+                index == 0
+                    ? const SizedBox.shrink()
+                    : Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        mainAxisSize: MainAxisSize.min,
+                        children: const [
+                          Icon(
+                            Icons.thumb_up_alt,
+                            color: Colors.white,
+                          ),
+                          SizedBox(
+                            width: 8,
+                          ),
+                          Icon(
+                            Icons.thumb_down_alt,
+                            color: Colors.white,
+                          )
+                        ],
+                      )
               ],
             ),
           )
