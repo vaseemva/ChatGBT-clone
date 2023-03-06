@@ -39,7 +39,7 @@ class ChatWidget extends StatelessWidget {
                         child: Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: DefaultTextStyle(
-                            style: TextStyle(),
+                            style: const TextStyle(),
                             child: AnimatedTextKit(
                               isRepeatingAnimation: false,
                               repeatForever: false,

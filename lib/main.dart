@@ -1,3 +1,4 @@
+import 'package:chatgpt_clone/providers/chat_provider.dart';
 import 'package:chatgpt_clone/providers/models_provider.dart';
 import 'package:chatgpt_clone/screens/home_screen.dart';
 import 'package:chatgpt_clone/utils/colors.dart';
@@ -17,6 +18,9 @@ class MyApp extends StatelessWidget {
       providers: [
         ChangeNotifierProvider(
           create: (_) => ModelsProvider(),
+        ),
+        ChangeNotifierProvider(
+          create: (_) => ChatProvider(),
         )
       ],
       child: MaterialApp(
