@@ -1,9 +1,9 @@
+import 'package:chatgpt_clone/models/chat_model.dart';
 import 'package:chatgpt_clone/providers/models_provider.dart';
 import 'package:chatgpt_clone/services/api_service.dart';
 import 'package:chatgpt_clone/services/assets_manager.dart';
 import 'package:chatgpt_clone/services/services.dart';
 import 'package:chatgpt_clone/utils/colors.dart';
-import 'package:chatgpt_clone/utils/constants.dart';
 import 'package:chatgpt_clone/widgets/chat_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
@@ -19,6 +19,10 @@ class HomeScreen extends StatefulWidget {
 class HomeScreenState extends State<HomeScreen> {
   bool _isTyping = false;
   final TextEditingController _textEditingController = TextEditingController();
+  final FocusNode _focusNode = FocusNode();
+  final ScrollController _scrollController = ScrollController();
+
+  List<ChatModel> chatList = [];
   @override
   Widget build(BuildContext context) {
     final modelsProvider = Provider.of<ModelsProvider>(context);
@@ -45,11 +49,12 @@ class HomeScreenState extends State<HomeScreen> {
             child: Column(children: [
           Flexible(
             child: ListView.builder(
+              controller: _scrollController,
               itemBuilder: (context, index) => ChatWidget(
-                msg: chatMessages[index]["msg"].toString(),
-                index: int.parse(chatMessages[index]["chatIndex"].toString()),
+                msg: chatList[index].msg,
+                index: chatList[index].chatIndex,
               ),
-              itemCount: 6,
+              itemCount: chatList.length,
             ),
           ),
           if (_isTyping) ...[
@@ -67,29 +72,19 @@ class HomeScreenState extends State<HomeScreen> {
               children: [
                 Expanded(
                     child: TextField(
+                  focusNode: _focusNode,
                   style: const TextStyle(color: Colors.white),
                   controller: _textEditingController,
-                  onSubmitted: (value) {},
+                  onSubmitted: (value) async {
+                    await sendmessage(modelsProvider);
+                  },
                   decoration: const InputDecoration.collapsed(
                       hintText: "Type a message",
                       hintStyle: TextStyle(color: Colors.grey)),
                 )),
                 IconButton(
                     onPressed: () async {
-                      setState(() {
-                        _isTyping = true;
-                      });
-                      try {
-                        await ApiServices.sendmessage(
-                            message: _textEditingController.text,
-                            modelId: modelsProvider.getCurrentModel);
-                      } catch (e) {
-                        print(e.toString());
-                      } finally {
-                        setState(() {
-                          _isTyping = false;
-                        });
-                      }
+                      await sendmessage(modelsProvider);
                     },
                     icon: const Icon(
                       Icons.send,
@@ -99,5 +94,33 @@ class HomeScreenState extends State<HomeScreen> {
             ),
           )
         ])));
+  }
+
+  scrollToEnd() {
+    _scrollController.animateTo(_scrollController.position.maxScrollExtent,
+        duration: const Duration(seconds: 1), curve: Curves.easeInOut);
+  }
+
+  sendmessage(ModelsProvider modelsProvider) async {
+    setState(() {
+      _isTyping = true;
+      chatList.add(ChatModel(msg: _textEditingController.text, chatIndex: 0));
+
+      _textEditingController.clear();
+      _focusNode.unfocus();
+    });
+    try {
+      chatList.addAll(await ApiServices.sendmessage(
+          message: _textEditingController.text,
+          modelId: modelsProvider.getCurrentModel));
+      setState(() {});
+    } catch (e) {
+      print(e.toString());
+    } finally {
+      setState(() {
+        scrollToEnd();
+        _isTyping = false;
+      });
+    }
   }
 }
